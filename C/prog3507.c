@@ -1,0 +1,18 @@
+#include <stdio.h>
+
+int main(void)
+{
+    int a;
+
+    printf("ì_êî=");
+    scanf("%d", &a);
+
+    if ((0 <= a) && (a <= 59)){
+        printf("ê‘ì_Ç≈Ç∑\n");
+    }
+    else {
+        printf("çáäiÇ≈Ç∑\n");
+    }
+    
+    return (0);
+}

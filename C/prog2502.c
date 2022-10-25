@@ -1,0 +1,25 @@
+#include<stdio.h>
+int main(void)
+{
+	int a;
+	
+	printf("i=");
+	scanf("%d", &a);
+	
+	switch (a % 3){
+	  case 0:
+		printf("äÑÇËêÿÇÍÇ‹Ç∑");
+		break;
+		
+	  case 1:
+		printf("Ç†Ç‹ÇËÇÕÇPÇ≈Ç∑");
+		break;
+		
+	  case 2:
+	    printf("Ç†Ç‹ÇËÇÕÇQÇ≈Ç∑");
+		break;
+		
+	}
+	printf("\n");
+	return(0);
+}

@@ -1,0 +1,13 @@
+#include<stdio.h>
+
+int main(void)
+{
+	char c;
+	printf("è¨ï∂éö : ");
+	scanf("%c", &c);
+	
+	c -= 0x20;
+	
+	printf("%c", c);
+	return(0);
+}
