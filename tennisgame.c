@@ -2,12 +2,12 @@
 #include <stdio.h>
 #include <conio.h>
 
-#define FIELD_OFFSET_X	5		/* ƒQ[ƒ€ƒtƒB[ƒ‹ƒh‚ÌXƒIƒtƒZƒbƒg 	*/
-#define FIELD_OFFSET_Y	1		/*                   YƒIƒtƒZƒbƒg 	*/
-#define FIELD_WIDTH		60		/*                   •				*/
-#define FIELD_HEIGHT	22		/*					 ‚‚³			*/
+#define FIELD_OFFSET_X	5		/* ã‚²ãƒ¼ãƒ ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã®Xã‚ªãƒ•ã‚»ãƒƒãƒˆ 	*/
+#define FIELD_OFFSET_Y	1		/*                   Yã‚ªãƒ•ã‚»ãƒƒãƒˆ 	*/
+#define FIELD_WIDTH		60		/*                   å¹…				*/
+#define FIELD_HEIGHT	22		/*					 é«˜ã•			*/
 
-#define PAD_LEN			5		/* ƒpƒbƒh‚Ì’·‚³ */
+#define PAD_LEN			5		/* ãƒ‘ãƒƒãƒ‰ã®é•·ã• */
 #define PAD_X_OFFSET	(FIELD_OFFSET_X - 1)
 #define PAD_Y_OFFSET	(FIELD_HEIGHT + FIELD_OFFSET_Y)
 #define PAD_X_MAX		(FIELD_WIDTH - PAD_LEN)
@@ -18,19 +18,19 @@
 
 #define WAIT			5000000
 
-HANDLE 	hStdout;			/* ƒRƒ“ƒ\[ƒ‹ƒEƒBƒ“ƒhƒE‚Ìƒnƒ“ƒhƒ‹ 	*/
+HANDLE 	hStdout;			/* ã‚³ãƒ³ã‚½ãƒ¼ãƒ«ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ãƒãƒ³ãƒ‰ãƒ« 	*/
 
-int		BallX;				/* ƒ{[ƒ‹‚ÌXÀ•W					*/
-int		BallY;				/* ƒ{[ƒ‹‚ÌYÀ•W					*/
-int		BallXDirect;		/* ƒ{[ƒ‹‚ÌX•ûŒü‚ÌˆÚ“®•ûŒüi1=‰E, -1=¶j */
-int		BallYDirect;		/* ƒ{[ƒ‹‚ÌY•ûŒü‚ÌˆÚ“®•ûŒüi1=‰º, -1=ãj */
+int		BallX;				/* ãƒœãƒ¼ãƒ«ã®Xåº§æ¨™					*/
+int		BallY;				/* ãƒœãƒ¼ãƒ«ã®Yåº§æ¨™					*/
+int		BallXDirect;		/* ãƒœãƒ¼ãƒ«ã®Xæ–¹å‘ã®ç§»å‹•æ–¹å‘ï¼ˆ1=å³, -1=å·¦ï¼‰ */
+int		BallYDirect;		/* ãƒœãƒ¼ãƒ«ã®Yæ–¹å‘ã®ç§»å‹•æ–¹å‘ï¼ˆ1=ä¸‹, -1=ä¸Šï¼‰ */
 
-int	   	PadX;				/* ƒpƒbƒh‚ÌXˆÊ’u					*/
+int	   	PadX;				/* ãƒ‘ãƒƒãƒ‰ã®Xä½ç½®					*/
 
-int		Score;				/* ƒXƒRƒA 							*/
-int		Miss;				/* ƒ~ƒX‚Ì‰ñ” 						*/
+int		Score;				/* ã‚¹ã‚³ã‚¢ 							*/
+int		Miss;				/* ãƒŸã‚¹ã®å›æ•° 						*/
 
-/* ŠÖ”ƒvƒƒgƒ^ƒCƒvéŒ¾ */
+/* é–¢æ•°ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ—å®£è¨€ */
 void InitGame(void);
 void ResetGame(void);
 void StartGame(void);
@@ -58,36 +58,36 @@ void beep(void);
 
 
 /********************/
-/*  ƒƒCƒ“ŠÖ”		*/
+/*  ãƒ¡ã‚¤ãƒ³é–¢æ•°		*/
 /********************/
 int main(void)
 {
 	int turn;
 
-	InitGame();			/* ƒQ[ƒ€‚Ì‰Šú‰» 	*/
+	InitGame();			/* ã‚²ãƒ¼ãƒ ã®åˆæœŸåŒ– 	*/
 
-	StartGame();		/* ƒQ[ƒ€ŠJn‘Ò‚¿ 	*/
+	StartGame();		/* ã‚²ãƒ¼ãƒ é–‹å§‹å¾…ã¡ 	*/
 	
 	while(1){
 		for (turn = 0; turn < 10; turn++){
 			wait(10);
 			if (turn == 0){
-				MoveBall();		/* ƒ{[ƒ‹‚ÌˆÚ“® */
+				MoveBall();		/* ãƒœãƒ¼ãƒ«ã®ç§»å‹• */
 			}
-			MovePad();			/* ƒpƒbƒh‚ÌˆÚ“®	*/
+			MovePad();			/* ãƒ‘ãƒƒãƒ‰ã®ç§»å‹•	*/
 			if (turn == 0){
 				if (JudgeBall() == MISS){
-						/* ƒ~ƒX‚Ìƒ{[ƒ‹ˆÊ’u•\¦ */
+						/* ãƒŸã‚¹æ™‚ã®ãƒœãƒ¼ãƒ«ä½ç½®è¡¨ç¤º */
 					ClearBall(BallX, BallY);
 					BallX += BallXDirect;
 					BallY += BallYDirect;
 					DrawBall(BallX, BallY);
 
-					PrintMissMessage();		/* ƒ~ƒXƒƒbƒZ[ƒW */
-					beep();					/* ƒ~ƒX‚Ìƒr[ƒv‰¹ */
-					wait(10000);			/* ƒQ[ƒ€ŠJn‚Ü‚Å‚Ì‘Ò‚¿ */
-					ResetGame();	/* ƒQ[ƒ€ƒtƒB[ƒ‹ƒh‚ÌƒNƒŠƒA */
-					StartGame();	/* ƒQ[ƒ€ŠJn‘Ò‚¿ 	*/
+					PrintMissMessage();		/* ãƒŸã‚¹ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ */
+					beep();					/* ãƒŸã‚¹ã®ãƒ“ãƒ¼ãƒ—éŸ³ */
+					wait(10000);			/* ã‚²ãƒ¼ãƒ é–‹å§‹ã¾ã§ã®å¾…ã¡ */
+					ResetGame();	/* ã‚²ãƒ¼ãƒ ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã®ã‚¯ãƒªã‚¢ */
+					StartGame();	/* ã‚²ãƒ¼ãƒ é–‹å§‹å¾…ã¡ 	*/
 				}
 			}
 		}
@@ -96,11 +96,11 @@ int main(void)
 
 
 /********************/
-/*  ƒQ[ƒ€‰Šú‰»	*/
+/*  ã‚²ãƒ¼ãƒ åˆæœŸåŒ–	*/
 /********************/
 void InitGame(void)
 {
-						/* ƒRƒ“ƒ\[ƒ‹ƒEƒBƒ“ƒhƒEƒnƒ“ƒhƒ‹‚Ìæ“¾ */
+						/* ã‚³ãƒ³ã‚½ãƒ¼ãƒ«ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ãƒãƒ³ãƒ‰ãƒ«ã®å–å¾— */
 	hStdout = GetStdHandle(STD_OUTPUT_HANDLE);
 	Score = 0;
 	Miss  = 0;
@@ -110,58 +110,58 @@ void InitGame(void)
 
 
 /********************/
-/*  ƒQ[ƒ€ƒŠƒZƒbƒg	*/
+/*  ã‚²ãƒ¼ãƒ ãƒªã‚»ãƒƒãƒˆ	*/
 /********************/
 void ResetGame(void)
 {
 
-	DrawField();		/* ƒtƒB[ƒ‹ƒh‚Ì•`‰æ */
+	DrawField();		/* ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã®æç”» */
 
-	PrintScore();		/* ƒXƒRƒA‚Ì•\¦		*/
+	PrintScore();		/* ã‚¹ã‚³ã‚¢ã®è¡¨ç¤º		*/
 
-	PrintMiss();		/* ƒ~ƒX‰ñ”‚Ì•\¦	*/
+	PrintMiss();		/* ãƒŸã‚¹å›æ•°ã®è¡¨ç¤º	*/
 
-	PadX = 0;			/* ƒpƒbƒhˆÊ’u‚Ì‰Šú‰»‚Æ•\¦ */
+	PadX = 0;			/* ãƒ‘ãƒƒãƒ‰ä½ç½®ã®åˆæœŸåŒ–ã¨è¡¨ç¤º */
 	DrawPad(PadX);
 
-	BallX = 2;			/* ƒ{[ƒ‹ˆÊ’u‚Ì‰Šú‰»‚Æ•\¦ */
+	BallX = 2;			/* ãƒœãƒ¼ãƒ«ä½ç½®ã®åˆæœŸåŒ–ã¨è¡¨ç¤º */
 	BallY = FIELD_HEIGHT - 1;
 	DrawBall(BallX, BallY);
 
-	BallXDirect = 1;	/* ƒ{[ƒ‹ˆÚ“®•ûŒü‚Ì‰Šú‰» */
+	BallXDirect = 1;	/* ãƒœãƒ¼ãƒ«ç§»å‹•æ–¹å‘ã®åˆæœŸåŒ– */
 	BallYDirect = -1;
 }
 
 
 /************************/
-/*  ƒQ[ƒ€ŠJn‘Ò‚¿ˆ—	*/
+/*  ã‚²ãƒ¼ãƒ é–‹å§‹å¾…ã¡å‡¦ç†	*/
 /************************/
 void StartGame(void)
 {
 	int key;
 
-	while (kbhit()){	/* ƒL[ƒoƒbƒtƒ@‚ÌƒNƒŠƒA */
+	while (kbhit()){	/* ã‚­ãƒ¼ãƒãƒƒãƒ•ã‚¡ã®ã‚¯ãƒªã‚¢ */
 		key = getch();
 	}
 
-	while (!kbhit());	/* ƒQ[ƒ€ŠJn‘Ò‚¿ 	*/
+	while (!kbhit());	/* ã‚²ãƒ¼ãƒ é–‹å§‹å¾…ã¡ 	*/
 }
 
 
 /****************************/
-/*  ƒQ[ƒ€ƒtƒB[ƒ‹ƒh‚Ì•`‰æ@*/
+/*  ã‚²ãƒ¼ãƒ ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ã®æç”»ã€€*/
 /****************************/
 void DrawField(void)
 {
 	int i;
 
-			/* ‰æ–ÊƒNƒŠƒA */
+			/* ç”»é¢ã‚¯ãƒªã‚¢ */
 	SetCursorLocate(0, 0);
 	for (i = 0; i < 80 * 25; i++){
 		printf(" ");
 	}
 
-			/* ‰¡ü */
+			/* æ¨ªç·š */
 	SetCursorLocate(FIELD_OFFSET_X - 1, FIELD_OFFSET_Y - 1);
 	printf("+");
 	for (i = 0; i < FIELD_WIDTH; i++){
@@ -169,7 +169,7 @@ void DrawField(void)
 	}
 	printf("+");
 
-			/* cü */
+			/* ç¸¦ç·š */
 	for (i =0; i < FIELD_HEIGHT; i++){
 		SetCursorLocate(FIELD_OFFSET_X - 1, i + FIELD_OFFSET_Y);
 		printf("|");
@@ -180,36 +180,36 @@ void DrawField(void)
 
 
 /******************/
-/*  ƒ{[ƒ‹‚ÌˆÚ“®@*/
+/*  ãƒœãƒ¼ãƒ«ã®ç§»å‹•ã€€*/
 /******************/
 void MoveBall(void)
 {
 
-				/* ƒ{[ƒ‹‚ÌX•ûŒüˆÚ“®”»’è */
+				/* ãƒœãƒ¼ãƒ«ã®Xæ–¹å‘ç§»å‹•åˆ¤å®š */
 	if (BallXDirect == 1){
 		if (BallX == FIELD_WIDTH - 1){
-			BallXDirect = -1;	/* ‰E’[‚È‚Ì‚Å¶‚É•ûŒü“]Š· */
+			BallXDirect = -1;	/* å³ç«¯ãªã®ã§å·¦ã«æ–¹å‘è»¢æ› */
 		}
 	}
 	else {
 		if (BallX == 0){
-			BallXDirect = 1;	/* ¶’[‚È‚Ì‚Å‰E‚É•ûŒü“]Š· */
+			BallXDirect = 1;	/* å·¦ç«¯ãªã®ã§å³ã«æ–¹å‘è»¢æ› */
 		}
 	}
 
-				/* ƒ{[ƒ‹‚ÌY•ûŒüˆÚ“®”»’è */
+				/* ãƒœãƒ¼ãƒ«ã®Yæ–¹å‘ç§»å‹•åˆ¤å®š */
 	if (BallYDirect == 1){
 		if (BallY == FIELD_HEIGHT - 1){
-			BallYDirect = -1;	/* ‰º’[‚È‚Ì‚Åã‚É•ûŒü“]Š· */
+			BallYDirect = -1;	/* ä¸‹ç«¯ãªã®ã§ä¸Šã«æ–¹å‘è»¢æ› */
 		}
 	}
 	else {
 		if (BallY == 0){
-			BallYDirect = 1;	/* ã’[‚È‚Ì‚Å‰º‚É•ûŒü“]Š· */
+			BallYDirect = 1;	/* ä¸Šç«¯ãªã®ã§ä¸‹ã«æ–¹å‘è»¢æ› */
 		}
 	}
 
-				/* ƒ{[ƒ‹‚ÌˆÚ“®•\¦ */
+				/* ãƒœãƒ¼ãƒ«ã®ç§»å‹•è¡¨ç¤º */
 	ClearBall(BallX, BallY);
 	BallX += BallXDirect;
 	BallY += BallYDirect;
@@ -218,7 +218,7 @@ void MoveBall(void)
 
 
 /******************/
-/*  ƒ{[ƒ‹‚ÌÁ‹@*/
+/*  ãƒœãƒ¼ãƒ«ã®æ¶ˆå»ã€€*/
 /******************/
 void ClearBall(int x, int y)
 {
@@ -227,7 +227,7 @@ void ClearBall(int x, int y)
 }
 
 /******************/
-/*  ƒ{[ƒ‹‚Ì•`‰æ@*/
+/*  ãƒœãƒ¼ãƒ«ã®æç”»ã€€*/
 /******************/
 void DrawBall(int x, int y)
 {
@@ -237,7 +237,7 @@ void DrawBall(int x, int y)
 
 
 /******************/
-/*  ƒpƒbƒh‚ÌˆÚ“®@*/
+/*  ãƒ‘ãƒƒãƒ‰ã®ç§»å‹•ã€€*/
 /******************/
 void MovePad(void)
 {
@@ -246,50 +246,50 @@ void MovePad(void)
 	if (kbhit()){
 		key = getch();
 		if (key == 'z'){
-			MovePadLeft();		/* z‚È‚ç¶‚ÉˆÚ“® */
+			MovePadLeft();		/* zãªã‚‰å·¦ã«ç§»å‹• */
 		}
 		else if (key == 'x'){
-			MovePadRight();		/* x‚È‚ç‰E‚ÉˆÚ“® */
+			MovePadRight();		/* xãªã‚‰å³ã«ç§»å‹• */
 		}
 		else if (key == 'q'){
-			exit(0);			/* q‚È‚çƒQ[ƒ€I—¹ */
+			exit(0);			/* qãªã‚‰ã‚²ãƒ¼ãƒ çµ‚äº† */
 		}
 	}
 }
 
 
 /********************/
-/*  ƒpƒbƒh‚Ì‰EˆÚ“®@*/
+/*  ãƒ‘ãƒƒãƒ‰ã®å³ç§»å‹•ã€€*/
 /********************/
 void MovePadRight(void)
 {
 	if (PadX == PAD_X_MAX){
-		return;			/* ‰E’[‚È‚ç‚È‚É‚à‚µ‚È‚¢ */
+		return;			/* å³ç«¯ãªã‚‰ãªã«ã‚‚ã—ãªã„ */
 	}
 
-	PadX++;				/* ‰E‚ÉˆÚ“® */
+	PadX++;				/* å³ã«ç§»å‹• */
 
-	DrawPad(PadX);		/* ƒpƒbƒh‚Ì•\¦ */
+	DrawPad(PadX);		/* ãƒ‘ãƒƒãƒ‰ã®è¡¨ç¤º */
 }
 
 
 /********************/
-/*  ƒpƒbƒh‚Ì¶ˆÚ“®@*/
+/*  ãƒ‘ãƒƒãƒ‰ã®å·¦ç§»å‹•ã€€*/
 /********************/
 void MovePadLeft(void)
 {
-	if (PadX == 0){		/* ¶’[‚È‚ç‚È‚É‚à‚µ‚È‚¢ */
+	if (PadX == 0){		/* å·¦ç«¯ãªã‚‰ãªã«ã‚‚ã—ãªã„ */
 		return;
 	}
 
-	PadX--;				/* ¶‚ÉˆÚ“® */
+	PadX--;				/* å·¦ã«ç§»å‹• */
 
-	DrawPad(PadX);		/* ƒpƒbƒh‚Ì•\¦ */
+	DrawPad(PadX);		/* ãƒ‘ãƒƒãƒ‰ã®è¡¨ç¤º */
 }
 
 
 /******************/
-/*  ƒpƒbƒh‚Ì•\¦@*/
+/*  ãƒ‘ãƒƒãƒ‰ã®è¡¨ç¤ºã€€*/
 /******************/
 void DrawPad(x)
 {
@@ -299,18 +299,18 @@ void DrawPad(x)
 
 
 /******************************/
-/*  ƒ{[ƒ‹‚ÆƒpƒbƒhˆÊ’u‚Ì”»’è@*/
+/*  ãƒœãƒ¼ãƒ«ã¨ãƒ‘ãƒƒãƒ‰ä½ç½®ã®åˆ¤å®šã€€*/
 /******************************/
 int JudgeBall(void)
 {
-	if (BallY == FIELD_HEIGHT - 1){	/* ƒ{[ƒ‹‚ª‰º’[‚É‚ ‚é‚©H */
-		if ((BallX < PadX - 1) || (BallX > PadX + 5)){	/* ƒpƒbƒh‚Ì”ÍˆÍ‚© */
-			Miss++;					/* ƒ~ƒX */
+	if (BallY == FIELD_HEIGHT - 1){	/* ãƒœãƒ¼ãƒ«ãŒä¸‹ç«¯ã«ã‚ã‚‹ã‹ï¼Ÿ */
+		if ((BallX < PadX - 1) || (BallX > PadX + 5)){	/* ãƒ‘ãƒƒãƒ‰ã®ç¯„å›²ã‹ */
+			Miss++;					/* ãƒŸã‚¹ */
 			PrintMiss();
 			return (MISS);
 		}
 		else {
-			Score++;				/* ‚Í‚Ë‚©‚¦‚µ¬Œ÷ */
+			Score++;				/* ã¯ã­ã‹ãˆã—æˆåŠŸ */
 			PrintScore();
 			return (CLEAR);
 		}
@@ -320,7 +320,7 @@ int JudgeBall(void)
 
 
 /***********************/
-/*  ƒJ[ƒ\ƒ‹ˆÊ’u‚Ìİ’è */
+/*  ã‚«ãƒ¼ã‚½ãƒ«ä½ç½®ã®è¨­å®š */
 /***********************/
 void SetCursorLocate(int x, int y)
 {
@@ -334,7 +334,7 @@ void SetCursorLocate(int x, int y)
 
 
 /*****************/
-/*  ƒXƒRƒA‚Ì•\¦ */
+/*  ã‚¹ã‚³ã‚¢ã®è¡¨ç¤º */
 /*****************/
 void PrintScore(void)
 {
@@ -344,7 +344,7 @@ void PrintScore(void)
 }
 
 /*******************/
-/*  ƒ~ƒX‰ñ”‚Ì•\¦ */
+/*  ãƒŸã‚¹å›æ•°ã®è¡¨ç¤º */
 /*******************/
 void PrintMiss(void)
 {
@@ -355,7 +355,7 @@ void PrintMiss(void)
 
 
 /*************************/
-/*  ƒ~ƒX‚ÌƒƒbƒZ[ƒW•\¦ */
+/*  ãƒŸã‚¹ã®ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸è¡¨ç¤º */
 /*************************/
 void PrintMissMessage(void)
 {
@@ -369,7 +369,7 @@ void PrintMissMessage(void)
 
 
 /*************/
-/*  ƒEƒFƒCƒg */
+/*  ã‚¦ã‚§ã‚¤ãƒˆ */
 /*************/
 void wait(int wait)
 {
@@ -385,11 +385,11 @@ void wait(int wait)
 
 
 /*********************/
-/*  ƒr[ƒv‰¹‚ğ–Â‚ç‚· */
+/*  ãƒ“ãƒ¼ãƒ—éŸ³ã‚’é³´ã‚‰ã™ */
 /*********************/
 void beep(void)
 {
 	printf("\x7");
 }
 
-/****  ƒvƒƒOƒ‰ƒ€‚¨‚í‚è ****/
+/****  ãƒ—ãƒ­ã‚°ãƒ©ãƒ ãŠã‚ã‚Š ****/
